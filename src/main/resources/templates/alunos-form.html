@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Alunos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0f0f11;
+            --surface: #1a1a1f;
+            --border: #2e2e38;
+            --accent: #7c5cfc;
+            --accent-light: #a688fa;
+            --text: #e8e8f0;
+            --muted: #888898;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 0 60px rgba(124, 92, 252, 0.08);
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .tag {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent-light);
+            background: rgba(124,92,252,0.12);
+            border: 1px solid rgba(124,92,252,0.3);
+            padding: 3px 10px;
+            border-radius: 99px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.4rem;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-family: 'Space Mono', monospace;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            margin-bottom: 1.25rem;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(124,92,252,0.2);
+        }
+
+        input[type="text"]::placeholder { color: #444455; }
+
+        button {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.85rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            background: var(--accent-light);
+            box-shadow: 0 4px 20px rgba(124,92,252,0.4);
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .footer-note span {
+            color: var(--accent-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="tag">View — alunos-form.html</div>
+        <h1>Cadastro<br>de Alunos</h1>
+        <p class="subtitle">Preencha os dados para registrar um novo aluno.</p>
+        <hr class="divider">
+
+        <form action="/alunos" method="post">
+            <label for="nome">Nome completo</label>
+            <input type="text" id="nome" name="nome" placeholder="Ex: Maria Silva" required />
+
+            <label for="matricula">Matrícula</label>
+            <input type="text" id="matricula" name="matricula" placeholder="Ex: 2024001" />
+
+            <button type="submit">Cadastrar Aluno →</button>
+        </form>
+
+        <p class="footer-note">
+            Camada <span>VIEW</span> · Spring MVC + Thymeleaf
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Alunos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0f0f11;
+            --surface: #1a1a1f;
+            --border: #2e2e38;
+            --accent: #7c5cfc;
+            --accent-light: #a688fa;
+            --green: #3ecf8e;
+            --text: #e8e8f0;
+            --muted: #888898;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 560px;
+            box-shadow: 0 0 60px rgba(62, 207, 142, 0.06);
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .tag {
+            display: inline-block;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--green);
+            background: rgba(62,207,142,0.1);
+            border: 1px solid rgba(62,207,142,0.3);
+            padding: 3px 10px;
+            border-radius: 99px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Empty state */
+        .empty {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 0 0 0.75rem 0;
+            text-align: left;
+        }
+
+        th:last-child { text-align: right; }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(46,46,56,0.6);
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child { border-bottom: none; }
+
+        tbody tr:hover { background: rgba(124,92,252,0.04); }
+
+        td {
+            padding: 0.9rem 0;
+            font-size: 0.95rem;
+        }
+
+        td:last-child {
+            text-align: right;
+        }
+
+        .badge {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            background: rgba(124,92,252,0.12);
+            color: var(--accent-light);
+            border: 1px solid rgba(124,92,252,0.25);
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        .counter {
+            margin-top: 1.25rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .counter strong { color: var(--green); }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 1.75rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.65rem 1.25rem;
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-back:hover {
+            border-color: var(--accent);
+            color: var(--accent-light);
+        }
+
+        .footer-note {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+        }
+
+        .footer-note span { color: var(--green); }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="tag">View — alunos-lista.html</div>
+        <h1>Alunos Cadastrados</h1>
+        <p class="subtitle">Registro atualizado após o último cadastro.</p>
+        <hr class="divider">
+
+        <!-- Empty state -->
+        <div class="empty" th:if="${#lists.isEmpty(alunos)}">
+            Nenhum aluno cadastrado ainda.
+        </div>
+
+        <!-- Table -->
+        <table th:if="${not #lists.isEmpty(alunos)}">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>Matrícula</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="aluno, stat : ${alunos}">
+                    <td th:text="${stat.index + 1}" style="color: var(--muted); font-family: 'Space Mono', monospace; font-size:0.8rem;"></td>
+                    <td th:text="${aluno.nome}"></td>
+                    <td>
+                        <span class="badge" th:text="${aluno.matricula}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="counter" th:if="${not #lists.isEmpty(alunos)}">
+            Total: <strong th:text="${#lists.size(alunos)}"></strong> aluno(s) registrado(s)
+        </p>
+
+        <a href="/alunos" class="btn-back">← Cadastrar outro aluno</a>
+
+        <p class="footer-note">
+            Camada <span>VIEW</span> · Spring MVC + Thymeleaf
+        </p>
+    </div>
+</body>
+</html>
